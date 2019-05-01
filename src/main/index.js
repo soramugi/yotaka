@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu, Tray } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -30,6 +30,16 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  const tray = new Tray(require('path').join(__dirname, '../../build/icons/yotaka_menu_icon.png'))
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item1', type: 'radio' },
+    { label: 'Item2', type: 'radio' },
+    { label: 'Item3', type: 'radio', checked: true },
+    { label: 'Item4', type: 'radio' }
+  ])
+  tray.setToolTip('This is my application.')
+  tray.setContextMenu(contextMenu)
 }
 
 app.on('ready', createWindow)
