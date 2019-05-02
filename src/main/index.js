@@ -8,9 +8,19 @@ import { app, clipboard, Menu, Tray } from 'electron'
  */
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path')
-    .join(__dirname, '/static')
+    .join(__dirname, 'static')
+    .replace(/\\/g, '\\\\')
+} else {
+  global.__static = require('path')
+    .join(__dirname, '..', '..', 'static')
     .replace(/\\/g, '\\\\')
 }
+
+// TODO セッティングからディレクトリ変更できるように
+global.__media = require('path').join(__dirname, 'media')
+
+// podcastのサーバーを立ち上げる
+require('./server')
 
 let tray = null
 
@@ -23,7 +33,7 @@ function createWindow () {
     {
       label: 'Copy Feed URL',
       click () {
-        clipboard.writeText('Example String')
+        clipboard.writeText('http://localhost:4350/rss.xml')
       }
     },
     { type: 'separator' },
@@ -31,9 +41,10 @@ function createWindow () {
   ])
   tray.setToolTip('This is my application.')
   tray.setContextMenu(contextMenu)
-  if (process.platform === 'darwin') {
-    app.dock.hide()
-  }
+}
+
+if (process.platform === 'darwin') {
+  app.dock.hide()
 }
 
 app.on('ready', createWindow)

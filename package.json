@@ -30,6 +30,9 @@
     "files": [
       "dist/electron/**/*"
     ],
+    "extraResources": [
+      "static"
+    ],
     "dmg": {
       "contents": [
         {
@@ -56,6 +59,8 @@
     }
   },
   "dependencies": {
+    "express": "^4.16.4",
+    "podcast": "^1.1.0",
     "vue": "^2.5.16",
     "vue-electron": "^1.0.6"
   },
