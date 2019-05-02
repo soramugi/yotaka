@@ -1,45 +1,39 @@
 'use strict'
 
-import { app, BrowserWindow, Menu, Tray } from 'electron'
+import { app, clipboard, Menu, Tray } from 'electron'
 
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+  global.__static = require('path')
+    .join(__dirname, '/static')
+    .replace(/\\/g, '\\\\')
 }
 
-let mainWindow
-const winURL = process.env.NODE_ENV === 'development'
-  ? `http://localhost:9080`
-  : `file://${__dirname}/index.html`
+let tray = null
 
 function createWindow () {
-  /**
-   * Initial window options
-   */
-  mainWindow = new BrowserWindow({
-    height: 563,
-    useContentSize: true,
-    width: 1000
-  })
-
-  mainWindow.loadURL(winURL)
-
-  mainWindow.on('closed', () => {
-    mainWindow = null
-  })
-
-  const tray = new Tray(require('path').join(__dirname, '../../build/icons/yotaka_menu_icon.png'))
+  tray = new Tray(
+    require('path').join(__dirname, '../../build/icons/yotaka_menu_icon.png')
+  )
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Item1', type: 'radio' },
-    { label: 'Item2', type: 'radio' },
-    { label: 'Item3', type: 'radio', checked: true },
-    { label: 'Item4', type: 'radio' }
+    { role: 'about' },
+    {
+      label: 'Copy Feed URL',
+      click () {
+        clipboard.writeText('Example String')
+      }
+    },
+    { type: 'separator' },
+    { role: 'quit' }
   ])
   tray.setToolTip('This is my application.')
   tray.setContextMenu(contextMenu)
+  if (process.platform === 'darwin') {
+    app.dock.hide()
+  }
 }
 
 app.on('ready', createWindow)
@@ -51,7 +45,7 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
-  if (mainWindow === null) {
+  if (tray === null) {
     createWindow()
   }
 })
