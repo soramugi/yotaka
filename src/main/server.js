@@ -1,11 +1,11 @@
 import express from 'express'
 import Podcast from 'podcast'
+import fs from 'fs'
 import path from 'path'
 import glob from 'glob'
 
 const app = express()
 app.use('/static', express.static(__static))
-app.use('/media', express.static(__media))
 
 const feed = new Podcast({
   title: 'yotaka',
@@ -18,31 +18,40 @@ const feed = new Podcast({
   ttl: '60'
 })
 
-const xml = feed.buildXml()
-
 app.get('/rss.xml', function (req, res) {
   res.set('Content-Type', 'text/xml; charset=utf-8')
 
-  glob(path.join(__media, '*.mp3'), function (err, files) {
+  app.use('/media', express.static(__media))
+
+  glob(path.join(__media, '*.mp3'), async function (err, files) {
     if (err) {
       console.error(err)
+      res.send(feed.buildXml())
       return
     }
     for (const file of files) {
-      console.log(file)
-      feed.addItem({
-        title: 'item title',
-        url: 'http://example.com/article4?this&that',
-        date: 'May 27, 2012',
-        lat: 33.417974,
-        long: -111.933231
-        // enclosure: { url: '...', file: 'path-to-file' }, // optional enclosure
-      })
+      await file2addFeedItem(file)
     }
 
-    res.send(xml)
+    res.send(feed.buildXml())
   })
 })
+
+async function file2addFeedItem (file) {
+  const title = path.basename(file, '.mp3')
+  const filename = path.basename(file)
+  return new Promise(function (resolve) {
+    fs.stat(file, function (_, stats) {
+      // stats.size
+      feed.addItem({
+        title: title,
+        url: '/media/' + filename,
+        date: stats.ctime
+      })
+      resolve()
+    })
+  })
+}
 
 // 数字符からポート番号の決定
 // http://www2u.biglobe.ne.jp/~b-jack/kouza/s-1.html

@@ -1,6 +1,13 @@
 'use strict'
 
-import { app, clipboard, Menu, Tray } from 'electron'
+import { app, clipboard, dialog, Menu, Tray } from 'electron'
+import Store from 'electron-store'
+
+const store = new Store({
+  media: {
+    path: require('path').join(__dirname, 'media')
+  }
+})
 
 /**
  * Set `__static` path to static files in production
@@ -16,8 +23,7 @@ if (process.env.NODE_ENV !== 'development') {
     .replace(/\\/g, '\\\\')
 }
 
-// TODO セッティングからディレクトリ変更できるように
-global.__media = require('path').join(__dirname, 'media')
+global.__media = store.get('media.path')
 
 // podcastのサーバーを立ち上げる
 require('./server')
@@ -30,9 +36,27 @@ function createWindow () {
   )
   const contextMenu = Menu.buildFromTemplate([
     { role: 'about' },
+    { type: 'separator' },
     {
-      label: 'Copy Feed URL',
+      label: '閲覧ディレクトリの変更',
       click () {
+        dialog.showOpenDialog(
+          { defaultPath: __media, properties: ['openDirectory'] },
+          function (filePaths) {
+            if (!(filePaths && filePaths.length)) {
+              return
+            }
+            const file = filePaths.shift()
+            store.set('media.path', file)
+            global.__media = store.get('media.path')
+          }
+        )
+      }
+    },
+    {
+      label: 'Podcast Feed のコピー',
+      click () {
+        // TODO 自分のIPアドレスを取得
         clipboard.writeText('http://localhost:4350/rss.xml')
       }
     },
