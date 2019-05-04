@@ -23,7 +23,7 @@ if (process.env.NODE_ENV !== 'development') {
     .replace(/\\/g, '\\\\')
 }
 
-global.__media = store.get('media.path')
+global.__url = 'http://127.0.0.1:4350'
 
 // podcastのサーバーを立ち上げる
 require('./server')
@@ -41,14 +41,13 @@ function createWindow () {
       label: '閲覧ディレクトリの変更',
       click () {
         dialog.showOpenDialog(
-          { defaultPath: __media, properties: ['openDirectory'] },
+          { defaultPath: store.get('media.path'), properties: ['openDirectory'] },
           function (filePaths) {
             if (!(filePaths && filePaths.length)) {
               return
             }
             const file = filePaths.shift()
             store.set('media.path', file)
-            global.__media = store.get('media.path')
           }
         )
       }
@@ -56,8 +55,7 @@ function createWindow () {
     {
       label: 'Podcast Feed のコピー',
       click () {
-        // TODO 自分のIPアドレスを取得
-        clipboard.writeText('http://localhost:4350/rss.xml')
+        clipboard.writeText(__url + '/rss.xml')
       }
     },
     { type: 'separator' },

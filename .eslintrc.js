@@ -11,7 +11,7 @@ module.exports = {
   extends: 'standard',
   globals: {
     __static: true,
-    __media: true
+    __url: true
   },
   plugins: [
     'html'
