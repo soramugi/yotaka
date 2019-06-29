@@ -24,9 +24,12 @@ app.get('/rss.xml', function (req, res) {
     docs: 'https://github.com/soramugi/yotaka',
     author: 'yotaka',
     // pubDate: 'May 20, 2012 04:00:00 GMT',
-    itunesImage: imageUrl
+    itunesImage: imageUrl,
+    itunesSummary: '',
+    itunesAuthor: 'yotaka'
   })
 
+  // TODO 並び順をファイルの作成日時順に
   glob(path.join(store.get('media.path'), '*.mp3'), function (err, files) {
     if (err) {
       console.error(err)
@@ -36,12 +39,18 @@ app.get('/rss.xml', function (req, res) {
     for (const file of files) {
       const title = path.basename(file, '.mp3')
       const url = __url + '/media/' + path.basename(file)
+      // TODO iTunesに登録できても再生できない
       feed.addItem({
         title,
+        url,
+        description: title,
+        date: 'May 20, 2012 04:00:00 GMT',
         enclosure: {
           url,
           file
-        }
+        },
+        itunesSubtitle: title,
+        itunesDuration: '2:00:00'
       })
     }
 
