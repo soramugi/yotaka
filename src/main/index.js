@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, clipboard, dialog, Menu, Tray } from 'electron'
+import { app, clipboard, dialog, nativeImage, Menu, Tray } from 'electron'
 import Store from 'electron-store'
 
 const store = new Store({
@@ -18,9 +18,9 @@ if (process.env.NODE_ENV !== 'development') {
     .join(__dirname, 'static')
     .replace(/\\/g, '\\\\')
 } else {
-  global.__static = require('path')
-    .join(__dirname, '..', '..', 'static')
-    .replace(/\\/g, '\\\\')
+  // global.__static = require('path')
+  //   .join(__dirname, '..', '..', 'static')
+  //   .replace(/\\/g, '\\\\')
 }
 
 global.__url = 'http://127.0.0.1:4350'
@@ -31,9 +31,10 @@ require('./server')
 let tray = null
 
 function createWindow () {
-  tray = new Tray(
-    require('path').join(__dirname, '../../build/icons/yotaka_menu_icon.png')
-  )
+  const image = nativeImage.createFromPath(require('path').join(__dirname, '../../build/icons/yotaka_menu_icon.png'))
+  image.resize({width: 16, height: 16})
+  tray = new Tray(image)
+
   const contextMenu = Menu.buildFromTemplate([
     { role: 'about' },
     { type: 'separator' },
