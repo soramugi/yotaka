@@ -2,6 +2,7 @@
 
 import { app, clipboard, dialog, nativeImage, Menu, Tray } from 'electron'
 import Store from 'electron-store'
+import ip from 'ip'
 
 const store = new Store({
   media: {
@@ -23,7 +24,13 @@ if (process.env.NODE_ENV !== 'development') {
   //   .replace(/\\/g, '\\\\')
 }
 
-global.__url = 'http://127.0.0.1:4350'
+// 数字符からポート番号の決定
+// http://www2u.biglobe.ne.jp/~b-jack/kouza/s-1.html
+// yotaka -> よたか -> 435
+global.__port = '4350'
+
+const networkIp = ip.address()
+global.__url = 'http://' + networkIp + ':' + global.__port
 
 // podcastのサーバーを立ち上げる
 // TODO ビルドエラーのため一旦コメントアウト

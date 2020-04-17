@@ -58,7 +58,4 @@ app.get('/rss.xml', function (req, res) {
   })
 })
 
-// 数字符からポート番号の決定
-// http://www2u.biglobe.ne.jp/~b-jack/kouza/s-1.html
-// yotaka -> よたか -> 435
-app.listen(4350, () => console.log('App listening on port 4350!'))
+app.listen(__port, () => console.log('App listening on port ' + __port + '!'))
