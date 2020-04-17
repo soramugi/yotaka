@@ -26,7 +26,8 @@ if (process.env.NODE_ENV !== 'development') {
 global.__url = 'http://127.0.0.1:4350'
 
 // podcastのサーバーを立ち上げる
-require('./server')
+// TODO ビルドエラーのため一旦コメントアウト
+// require('./server')
 
 let tray = null
 
