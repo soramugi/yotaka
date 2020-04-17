@@ -3,25 +3,33 @@
 import { app, clipboard, dialog, nativeImage, Menu, Tray } from 'electron'
 import Store from 'electron-store'
 import ip from 'ip'
+import path from 'path'
 
+const mediaPath = path.join(__dirname, 'media')
 const store = new Store({
   media: {
-    path: require('path').join(__dirname, 'media')
+    path: mediaPath
   }
 })
+
+if (!store.get('media.path')) {
+  store.set('media.path', mediaPath)
+}
+
+console.log(store.get('media.path'))
 
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
 if (process.env.NODE_ENV !== 'development') {
-  global.__static = require('path')
+  global.__static = path
     .join(__dirname, 'static')
     .replace(/\\/g, '\\\\')
 } else {
-  // global.__static = require('path')
-  //   .join(__dirname, '..', '..', 'static')
-  //   .replace(/\\/g, '\\\\')
+  global.__static = path
+    .join(__dirname, '..', '..', 'static')
+    .replace(/\\/g, '\\\\')
 }
 
 // 数字符からポート番号の決定
@@ -34,12 +42,12 @@ global.__url = 'http://' + networkIp + ':' + global.__port
 
 // podcastのサーバーを立ち上げる
 // TODO ビルドエラーのため一旦コメントアウト
-// require('./server')
+require('./server')
 
 let tray = null
 
 function createWindow () {
-  const image = nativeImage.createFromPath(require('path').join(__dirname, '../../build/icons/yotaka_menu_icon.png'))
+  const image = nativeImage.createFromPath(path.join(__dirname, '../../build/icons/yotaka_menu_icon.png'))
   image.resize({width: 16, height: 16})
   tray = new Tray(image)
 

@@ -8,11 +8,11 @@ const store = new Store()
 
 const app = express()
 app.use('/static', express.static(__static))
-app.use('/media', express.static(store.get('media.path')))
 
 app.get('/rss.xml', function (req, res) {
   res.set('Content-Type', 'text/xml; charset=utf-8')
 
+  // 音声ファイルの取得パス作成、store.get('media.path')は可変なのでrss取得時に再設定
   app.use('/media', express.static(store.get('media.path')))
 
   const imageUrl = __url + '/static/feed_icon.png'
@@ -36,10 +36,11 @@ app.get('/rss.xml', function (req, res) {
       res.send(feed.buildXml('  '))
       return
     }
+
     for (const file of files) {
       const title = path.basename(file, '.mp3')
       const url = __url + '/media/' + path.basename(file)
-      // TODO iTunesに登録できても再生できない
+      // TODO ファイル情報からfeedの情報変更
       feed.addItem({
         title,
         url,
