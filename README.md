@@ -36,11 +36,22 @@
 ポッドキャスト取得クライアントに貼り付けてコンテンツのダウンロードが行える
 
 Mac、iPhoneであれば `Apple Podcast`
-Androidであれば `Podcast Addict`
+Androidであれば `Podcast Addict` (ファイル名によっては取得に失敗します)
 
 で取得が可能
 
-## 開発環境
+配信クライアントPCは固定IPにしておく事をお勧めします。
+
+## 今後の開発予定項目
+
+- [ ] Android版での取得失敗原因調査
+- [ ] Windows環境の実行
+- [ ] Linux環境での実行
+- [ ] ファイルの再生時間をfeedに追加
+- [ ] travisでの自動ビルドに対応
+- [ ] IP直アクセスを回避できないか?
+
+## 開発環境構築
 
 > An electron-vue project
 

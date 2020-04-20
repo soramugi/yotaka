@@ -2,6 +2,7 @@
 
 import { app, BrowserWindow, clipboard, dialog, nativeImage, Menu, Tray } from 'electron'
 import Store from 'electron-store'
+import log from 'electron-log'
 import ip from 'ip'
 import path from 'path'
 import QRCode from 'qrcode'
@@ -115,6 +116,13 @@ app.on('activate', () => {
   if (tray === null) {
     createWindow()
   }
+})
+
+process.on('uncaughtException', function (err) {
+  log.error('electron:event:uncaughtException')
+  log.error(err)
+  log.error(err.stack)
+  app.quit()
 })
 
 /**
