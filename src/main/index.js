@@ -5,7 +5,27 @@ import Store from 'electron-store'
 import ip from 'ip'
 import path from 'path'
 
-const mediaPath = path.join(__dirname, 'media')
+let mediaPath = path.join(__dirname, 'static')
+let menuIcon = path.join(__dirname, 'static', 'yotaka_menu_icon.png')
+
+/**
+ * Set `__static` path to static files in production
+ * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
+ */
+if (process.env.NODE_ENV === 'development') {
+  // 開発環境
+  mediaPath = path.join(__dirname, '..', '..', 'media')
+  menuIcon = path.join(__dirname, '../../static/yotaka_menu_icon.png')
+  global.__static = path
+    .join(__dirname, '..', '..', 'static')
+    .replace(/\\/g, '\\\\')
+} else {
+  // パッケージビルド版
+  global.__static = path
+    .join(__dirname, 'static')
+    .replace(/\\/g, '\\\\')
+}
+
 const store = new Store({
   media: {
     path: mediaPath
@@ -14,22 +34,6 @@ const store = new Store({
 
 if (!store.get('media.path')) {
   store.set('media.path', mediaPath)
-}
-
-console.log(store.get('media.path'))
-
-/**
- * Set `__static` path to static files in production
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
- */
-if (process.env.NODE_ENV !== 'development') {
-  global.__static = path
-    .join(__dirname, 'static')
-    .replace(/\\/g, '\\\\')
-} else {
-  global.__static = path
-    .join(__dirname, '..', '..', 'static')
-    .replace(/\\/g, '\\\\')
 }
 
 // 数字符からポート番号の決定
@@ -41,13 +45,12 @@ const networkIp = ip.address()
 global.__url = 'http://' + networkIp + ':' + global.__port
 
 // podcastのサーバーを立ち上げる
-// TODO ビルドエラーのため一旦コメントアウト
 require('./server')
 
 let tray = null
 
 function createWindow () {
-  const image = nativeImage.createFromPath(path.join(__dirname, '../../build/icons/yotaka_menu_icon.png'))
+  const image = nativeImage.createFromPath(menuIcon)
   image.resize({width: 16, height: 16})
   tray = new Tray(image)
 
