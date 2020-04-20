@@ -1,5 +1,47 @@
 # yotaka
 
+宅内ポッドキャスト配信のためのPCクライアント
+
+![icon.png](https://raw.githubusercontent.com/soramugi/yotaka/master/static/feed_icon.png "incoアイコン")
+
+## これはなに?
+
+宅内ポッドキャスト配信向けのPCクライアントアプリ、yotakaです。
+
+インターネット上に公開したくない音声ファイルや映像ファイルを
+同一ネットワークのみにポッドキャストとして配信ができるクライアントアプリケーション。
+
+- 録音したラジオコンテンツ
+- 社内のみに限定配信する音声コンテンツ
+- インターネット記事の読み上げ音声
+- 動画ファイルをダウンロードして通信量の節約
+
+などを目的としたポッドキャスト配信に使用できます。
+
+## 使い方
+
+[ここから最新版をダウンロード](https://github.com/soramugi/yotaka/releases)
+(現状Mac版のみ、将来的にはWindowsやLinux対応予定)
+
+インストール実行後、起動
+ツールバーにアイコンが追加される
+
+![menu.png](https://raw.githubusercontent.com/soramugi/yotaka/master/web_static/menu.png "menu")
+
+「閲覧ディレクトリの変更」実行、配信したいファイルが置かれているディレクトリを選択
+(配信可能拡張子は `M4A` `MP3` `MOV` `MP4` `M4V`)
+
+「Podcast Feed のコピー」「Podcast Feed をQRコードで表示」を行いURLを取得
+
+ポッドキャスト取得クライアントに貼り付けてコンテンツのダウンロードが行える
+
+Mac、iPhoneであれば `Apple Podcast`
+Androidであれば `Podcast Addict`
+
+で取得が可能
+
+## 開発環境
+
 > An electron-vue project
 
 #### Build Setup
