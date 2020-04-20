@@ -34,20 +34,43 @@ app.get('/rss.xml', async function (req, res) {
     itunesAuthor: 'yotaka'
   })
 
-  // TODO 拡張子をmp3以外にも対応
-  const files = await glob(path.join(store.get('media.path'), '*.mp3'))
+  const files = await glob(path.join(store.get('media.path'), '*.*'))
 
-  // TODO 並び順をファイルの作成日時順に
+  const list = []
   for (const file of files) {
-    const title = path.basename(file, '.mp3')
-    const url = __url + '/media/' + path.basename(file)
+    const extname = path.extname(file)
+
+    // 対応音声ファイル: M4A, MP3, MOV, MP4, M4V
+    if (!extname.match(/\.m4a|\.mp3|\.mov|\.mp4|\.m4v/i)) {
+      continue
+    }
+    const title = path.basename(file, extname)
     const stats = fs.statSync(file)
+    const date = stats.atime
+    const url = __url + '/media/' + path.basename(file)
     const duration = await getAudioDurationInSeconds(file)
+    list.push({
+      file,
+      date,
+      title,
+      url,
+      duration
+    })
+  }
+  // 並び順をファイルの作成日時順(降順)に
+  list.sort((a, b) => b.date - a.date)
+
+  for (const data of list) {
+    const file = data.file
+    const date = data.date
+    const title = data.title
+    const url = data.url
+    const duration = data.duration
     feed.addItem({
       title,
       url,
       description: title,
-      date: stats.atime,
+      date,
       enclosure: {
         url,
         file
