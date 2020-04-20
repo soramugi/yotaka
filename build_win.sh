@@ -8,4 +8,4 @@ docker run -ti \
   -v ~/.cache/electron:/root/.cache/electron \
   -v ~/.cache/electron-builder:/root/.cache/electron-builder \
   electronuserland/builder:wine \
-  bash -c 'npm install && npm run build:win'
+  bash -c 'npm install && npm run build:release:win'
