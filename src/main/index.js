@@ -1,9 +1,10 @@
 'use strict'
 
-import { app, clipboard, dialog, nativeImage, Menu, Tray } from 'electron'
+import { app, BrowserWindow, clipboard, dialog, nativeImage, Menu, Tray } from 'electron'
 import Store from 'electron-store'
 import ip from 'ip'
 import path from 'path'
+import QRCode from 'qrcode'
 
 let mediaPath = path.join(__dirname, 'static')
 let menuIcon = path.join(__dirname, 'static', 'yotaka_menu_icon.png')
@@ -76,6 +77,18 @@ function createWindow () {
       label: 'Podcast Feed のコピー',
       click () {
         clipboard.writeText(__url + '/rss.xml')
+      }
+    },
+    {
+      label: 'Podcast Feed を QRコードで表示',
+      click () {
+        QRCode.toDataURL(__url + '/rss.xml', (_, url) => {
+          let childwin = new BrowserWindow()
+          childwin.loadURL(url)
+          childwin.on('closed', () => {
+            childwin = null
+          })
+        })
       }
     },
     { type: 'separator' },
