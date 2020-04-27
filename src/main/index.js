@@ -96,7 +96,7 @@ function createWindow () {
     { type: 'separator' },
     { role: 'quit' }
   ])
-  tray.setToolTip('This is my application.')
+  tray.setToolTip('yotaka')
   tray.setContextMenu(contextMenu)
 }
 

@@ -1,8 +1,8 @@
 {
   "name": "yotaka",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "soramugi <soramugi.chika@gmail.com>",
-  "description": "An electron-vue project",
+  "description": "宅内ポッドキャスト配信クライアント",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
