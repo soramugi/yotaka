@@ -21,7 +21,7 @@
 ## 使い方
 
 [ここから最新版をダウンロード](https://github.com/soramugi/yotaka/releases)
-(現状Mac版のみ、将来的にはWindowsやLinux対応予定)
+(現状Windows,Mac版のみ対応、将来的にはLinuxも対応予定)
 
 インストール実行後、起動
 ツールバーにアイコンが追加される
@@ -42,10 +42,24 @@ Androidであれば `Podcast Addict` (ファイル名によっては取得に失
 
 配信クライアントPCは固定IPにしておく事をお勧めします。
 
+## Q&A
+
+Q: Windowsでポッドキャストの取得ができません
+A: ファイヤーウォールの設定を見直してください
+
+- ネットワークアクセス(WiFi接続)を「プライベート」に設定
+- Windowsの設定「アプリにWindowsファイアウォール経由の通信を許可する」でyotakaを探す、
+- 一旦yotakaの設定を削除
+- 「別のアプリの許可」でyotakaを「プライベート」ネットワークでアクセス出来るように設定を追加する。
+- yotakaのファイルパスは以下
+- C:\Users\<ユーザー名>\AppData\Local\Programs\yotaka
+- 設定方法は以下のURLを参考
+- https://www.buffalo.jp/support/faq/detail/792.html
+
 ## 今後の開発予定項目
 
 - [ ] Android版での取得失敗原因調査
-- [ ] Windows環境の実行
+- [x] Windows環境の実行
 - [ ] Linux環境での実行
 - [ ] ファイルの再生時間をfeedに追加
 - [ ] travisでの自動ビルドに対応
