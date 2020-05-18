@@ -33,10 +33,23 @@
 
 「Podcast Feed のコピー」「Podcast Feed をQRコードで表示」を行いURLを取得
 
-ポッドキャスト取得クライアントに貼り付けてコンテンツのダウンロードが行える
+下記のポッドキャスト取得クライアントに貼り付けてコンテンツのダウンロードが行える
 
-Mac、iPhoneであれば `Apple Podcast`
-Androidであれば `Podcast Addict` (ファイル名によっては取得に失敗します)
+### Windows and MAC
+- iTunes Desktop application
+
+### iOS
+- Podcast app by Apple
+- Overcast
+- Downcast
+- Pocket Casts (paid app)
+
+### Android
+- Podcast Addict
+- Podcast Republic
+- BeyondPod
+- DoggCatcher
+- Pocket Casts (paid app)
 
 で取得が可能
 
